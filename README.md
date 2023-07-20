@@ -31,6 +31,15 @@ There are currently 8 opcodes, with more coming in the future. The current opcod
 | 6      | DIV           | Divide the content of the first cell by the content of the second cell and store the quotient in the cell pointed to by the third argument. The contents of the cells pointed to by the first and second  arguments are deleted.                                                                                                                                     | Index of the cell with the left  operand                             | Index of the cell with the right operand                                                    | Index of the cell in which  to store the quotient.                                        |
 | 7      | PRINT_AND_POP | Print and pop the contents of up to three cells by  specifying their indices. Duplicate arguments are  ignored.                                                                                                                                                                                                                                                      | Index of the first cell whose  content should be printed and popped. | Index of the second cell whose content should be printed and  popped. Ignored if duplicate. | Index of the third cell whose content should be printed and popped. Ignored if duplicate. |
 
+## VM features
+
+- Number of stack cells: 10
+- Supported operations: + - * /
+- Operator precedence: <br>
+    - 20: * / <br>
+    - 10: + - <br>
+    - 0: Integer literals
+
 # Upcoming features
 
 ### Roadmap with features in the order in which they will be added
