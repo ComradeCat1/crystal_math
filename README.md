@@ -36,6 +36,7 @@ There are currently 8 opcodes, with more coming in the future. The current opcod
 - Number of stack cells: 10
 - Supported operations: + - * /
 - Operator precedence: <br>
+    - 30: ( ) <br>
     - 20: * / <br>
     - 10: + - <br>
     - 0: Integer literals
