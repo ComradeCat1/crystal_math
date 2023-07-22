@@ -1,8 +1,6 @@
 comp: expr.c interp.c main.c scan.c tree.c compile.c
 	gcc -o te -g expr.c interp.c main.c scan.c tree.c compile.c
 
-comp2: expr2.c interp.c main.c scan.c tree.c compile.c
-	gcc -o te2 -g expr2.c interp.c main.c scan.c tree.c compile.c
 clean:
 	rm -f te te2 *.o
 

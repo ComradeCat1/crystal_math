@@ -7,17 +7,23 @@
 static struct ASTnode *primary(void) {
   struct ASTnode *n;
 
-  // For an INTLIT token, make a leaf AST node for it
-  // and scan in the next token. Otherwise, a syntax error
-  // for any other token type.
   switch (Token.token) {
-  case T_INTLIT:
-    n = mkastleaf(A_INTLIT, Token.intvalue);
-    scan(&Token);
-    return (n);
-  default:
-    fprintf(stderr, "syntax error on line %d, token %d\n", Line, Token.token);
-    exit(1);
+    case T_INTLIT:
+      n = mkastleaf(A_INTLIT, Token.intvalue);
+      scan(&Token);
+      return n;
+    case T_LPAREN:
+      scan(&Token);
+      n = binexpr(0);
+      if (Token.token != T_RPAREN) {
+        fprintf(stderr, "syntax error on line %d, expected ')'\n", Line);
+        exit(1);
+      }
+      scan(&Token);
+      return n;
+    default:
+      fprintf(stderr, "syntax error on line %d, token %d\n", Line, Token.token);
+      exit(1);
   }
 }
 
@@ -33,6 +39,10 @@ int arithop(int tokentype) {
     return (A_MULTIPLY);
   case T_SLASH:
     return (A_DIVIDE);
+  case T_LPAREN:
+    return (A_LPAREN);
+  case T_RPAREN:
+    return (A_RPAREN);
   default:
     fprintf(stderr, "syntax error on line %d, token %d\n", Line, tokentype);
     exit(1);
@@ -45,51 +55,65 @@ static int OpPrec[] = { 0, 10, 10, 20, 20, 0 };
 // Check that we have a binary operator and
 // return its precedence.
 static int op_precedence(int tokentype) {
-  int prec = OpPrec[tokentype];
-  if (prec == 0) {
-    fprintf(stderr, "syntax error on line %d, token %d\n", Line, tokentype);
-    exit(1);
+  switch (tokentype) {
+    case T_LPAREN:
+      return 30;
+    case T_RPAREN:
+      return 30;
+    default:
+      int prec = OpPrec[tokentype];
+      if (prec == 0) {
+        fprintf(stderr, "syntax error on line %d, token %d\n", Line, tokentype);
+        exit(1);
+      }
+      return prec;
   }
-  return (prec);
 }
 
-// Return an AST tree whose root is a binary operator.
-// Parameter ptp is the previous token's precedence.
 struct ASTnode *binexpr(int ptp) {
   struct ASTnode *left, *right;
   int tokentype;
 
-  // Get the integer literal on the left.
-  // Fetch the next token at the same time.
+  // Get the primary expression on the left.
   left = primary();
 
   // If no tokens left, return just the left node
   tokentype = Token.token;
   if (tokentype == T_EOF)
-    return (left);
+    return left;
 
   // While the precedence of this token is
   // more than that of the previous token precedence
-  while (op_precedence(tokentype) > ptp) {
-    // Fetch in the next integer literal
+  while (op_precedence(tokentype) > ptp && tokentype != T_RPAREN) {
+    // Fetch the next token
     scan(&Token);
 
-    // Recursively call binexpr() with the
-    // precedence of our token to build a sub-tree
-    right = binexpr(OpPrec[tokentype]);
+    // Check for opening parenthesis
+    if (tokentype == T_LPAREN) {
+      // Parse the expression inside the parentheses
+      right = binexpr(0);
 
-    // Join that sub-tree with ours. Convert the token
-    // into an AST operation at the same time.
+      // Check for closing parenthesis
+      if (Token.token != T_RPAREN) {
+        fprintf(stderr, "syntax error on line %d, expected ')'\n", Line);
+        exit(1);
+      }
+      scan(&Token);
+    } else {
+      // Parse the next primary expression
+      right = binexpr(op_precedence(tokentype));
+    }
+
+    // Join the left and right expressions with the operator
     left = mkastnode(arithop(tokentype), left, right, 0);
 
-    // Update the details of the current token.
-    // If no tokens left, return just the left node
+    // Update the details of the current token
     tokentype = Token.token;
     if (tokentype == T_EOF)
-      return (left);
+      return left;
   }
 
   // Return the tree we have when the precedence
   // is the same or lower
-  return (left);
+  return left;
 }
