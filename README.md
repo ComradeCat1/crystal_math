@@ -45,7 +45,7 @@ There are currently 8 opcodes, with more coming in the future. The current opcod
 ### Roadmap with features in the order in which they will be added
 
 - [ ] Add the modulo operator
-- [ ] Support changing the precedence with parentheses
+- [x] Support changing the precedence with parentheses
 - [ ] Allow defining custom variables and using them in the math code. This would require me to write a custom data structure to hold the variables.
 - [ ] Add Boolean algebra operators and functions.
 - [ ] Allow defining custom functions and using them in the math code.
