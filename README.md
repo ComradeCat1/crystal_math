@@ -43,7 +43,7 @@ There are currently 8 opcodes, with more coming in the future. The current opcod
 
 # Upcoming features
 
-### Roadmap with features in the order in which they will be added
+### Roadmap with features ordered by priority in descending order.
 
 - [ ] Add the modulo operator
 - [x] Support changing the precedence with parentheses
