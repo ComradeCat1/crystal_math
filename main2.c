@@ -16,6 +16,14 @@ static void init() {
   } 
 }
 
+void freeall_stacks(void)
+{
+    for (int i=0; i<10; i++) {
+        freestack[i] = 1;
+        stack[i] = 0;
+    }
+}
+
 // Print out a usage if started incorrectly
 static void usage(char *prog) {
   fprintf(stderr, "Usage: %s infile\n", prog);
