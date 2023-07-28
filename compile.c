@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 int alloc_stack(void) {
-    for (int i=0; i<10; i++) {
+    for (int i=0; i<12; i++) {
         if (freestack[i]) {
             freestack[i]= 0;
             return(i);
@@ -18,7 +18,7 @@ int alloc_stack(void) {
 
 void freeall_stacks(void)
 {
-    for (int i=0; i<10; i++) {
+    for (int i=0; i<12; i++) {
         freestack[i] = 1;
         stack[i] = 0;
     }
