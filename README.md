@@ -33,11 +33,11 @@ There are currently 8 opcodes, with more coming in the future. The current opcod
 
 ## VM features
 
-- Number of stack cells: 10
-- Supported operations: + - * /
+- Number of stack cells: 12
+- Supported operations: + - * / %
 - Operator precedence: <br>
     - 30: ( ) <br>
-    - 20: * / <br>
+    - 20: * / % <br>
     - 10: + - <br>
     - 0: Integer literals
 
@@ -45,7 +45,7 @@ There are currently 8 opcodes, with more coming in the future. The current opcod
 
 ### Roadmap with features ordered by priority in descending order.
 
-- [ ] Add the modulo operator
+- [x] Add the modulo operator
 - [x] Support changing the precedence with parentheses
 - [ ] Allow defining custom variables and using them in the math code. This would require me to write a custom data structure to hold the variables.
 - [ ] Add Boolean algebra operators and functions.

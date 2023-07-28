@@ -154,6 +154,16 @@ int interpretAST(char *out) {
                 stack[arg1] = 0;
                 freestack[arg1] = 1;
                 break;
+            case 8:
+                arg1 = scanBytecode(skipOut());
+                arg2 = scanBytecode(skipOut());
+                arg3 = scanBytecode(skipOut());
+                result = stack[arg1] % stack[arg2];
+                stack[arg1] = stack[arg2] = 0;
+                freestack[arg1] = freestack[arg2] = 1;
+                stack[arg3] = result;
+                freestack[arg3] = 0;
+                break;
             default:
                 printf("Unknown opcode %d at line %d\n", c, Line);
                 exit(1);

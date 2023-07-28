@@ -76,6 +76,11 @@ int DivOP(int space1, int space2) {
     return 0;
 }
 
+int ModOP(int space1, int space2) {
+    fprintf(Outfile, "%d %d %d %d\n", MOD_OP, space1, space2, space1);
+    return 0;
+}
+
 int PrintAndPopOP() {
     int remaining;
     for (int i = 0; i < 10; i++) {
@@ -138,6 +143,16 @@ int compileAST(struct ASTnode *n) {
             op2 = find_stack(rightval);
             DivOP(op1, op2);
             result = stack[op1] / stack[op2];
+            stack[op1] = stack[op2] = 0;
+            freestack[op1] = freestack[op2] = 1;
+            stack[op1] = result;
+            freestack[op1] = 0;
+            return result;
+        case A_MODULO:
+            op1 = find_stack(leftval);
+            op2 = find_stack(rightval);
+            ModOP(op1, op2);
+            result = stack[op1] % stack[op2];
             stack[op1] = stack[op2] = 0;
             freestack[op1] = freestack[op2] = 1;
             stack[op1] = result;

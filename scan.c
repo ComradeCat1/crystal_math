@@ -94,6 +94,9 @@ int scan(struct token *t) {
   case ')':
     t->token = T_RPAREN;
     break;
+  case '%':
+    t->token = T_PERCENT;
+    break;
   default:
 
     // If it's a digit, scan the

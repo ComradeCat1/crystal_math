@@ -43,6 +43,8 @@ int arithop(int tokentype) {
     return (A_LPAREN);
   case T_RPAREN:
     return (A_RPAREN);
+  case T_PERCENT:
+    return (A_MODULO);
   default:
     fprintf(stderr, "syntax error on line %d, token %d\n", Line, tokentype);
     exit(1);
@@ -50,7 +52,7 @@ int arithop(int tokentype) {
 }
 
 // Operator precedence for each token
-static int OpPrec[] = { 0, 10, 10, 20, 20, 0 };
+static int OpPrec[] = { 0, 10, 10, 20, 20, 20, 0 };
 
 // Check that we have a binary operator and
 // return its precedence.

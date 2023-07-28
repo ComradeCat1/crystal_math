@@ -10,7 +10,7 @@
 static void init() {
   Line = 1;
   Putback = '\n';
-  for (int i=0; i<10; i++) {
+  for (int i=0; i<12; i++) {
     stack[i] = 0;
     freestack[i] = 1;
   } 

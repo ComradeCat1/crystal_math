@@ -11,3 +11,4 @@
 #define MUL_OP 5
 #define DIV_OP 6
 #define PRINT_AND_POP 7
+#define MOD_OP 8
