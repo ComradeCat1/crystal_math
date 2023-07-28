@@ -169,7 +169,7 @@ int interpretAST(char *out) {
                 exit(1);
         }
     }
-    // printf("Final stack: [ %d , %d , %d , %d , %d , %d , %d , %d , %d , %d ]\n", stack[0], stack[1], stack[2], stack[3], stack[4], stack[5], stack[6], stack[7], stack[8], stack[9]);
+    // printf("Final stack: [ %d , %d , %d , %d , %d , %d , %d , %d , %d , %d , %d, %d]\n", stack[0], stack[1], stack[2], stack[3], stack[4], stack[5], stack[6], stack[7], stack[8], stack[9], stack[10], stack[11]);
     fclose(Outfile);
     return 0;
 }
