@@ -7,16 +7,5 @@ clean:
 interp: interp.c main2.c
 	gcc -o interp -g interp.c main2.c
 
-test: parser
-	-(./parser input01; \
-	 ./parser input02; \
-	 ./parser input03; \
-	 ./parser input04; \
-	 ./parser input05)
-
-test2: parser2
-	-(./parser2 input01; \
-	 ./parser2 input02; \
-	 ./parser2 input03; \
-	 ./parser2 input04; \
-	 ./parser2 input05)
+test_tree: test_tree.c
+	gcc -o test_tree -g test_tree.c

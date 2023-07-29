@@ -1,6 +1,7 @@
 #include "defs.h"
 #include "data.h"
 #include "decl.h"
+#include <string.h>
 
 // Build and return a generic AST node
 struct ASTnode *mkastnode(int op, struct ASTnode *left,
@@ -30,4 +31,44 @@ struct ASTnode *mkastleaf(int op, int intvalue) {
 // Make a unary AST node: only one child
 struct ASTnode *mkastunary(int op, struct ASTnode *left, int intvalue) {
   return (mkastnode(op, left, NULL, intvalue));
+}
+
+// Function to print the AST recursively with indentation
+void printAST(struct ASTnode* node, int level) {
+  if (node == NULL) {
+    return;
+  }
+
+  // Indent based on the level
+  for (int i = 0; i < level; i++) {
+    printf("  ");
+  }
+
+  switch (node->op) {
+    case A_ADD:
+      printf("op: +, intvalue: %d\n", node->intvalue);
+      break;
+    case A_SUBTRACT:
+      printf("op: -, intvalue: %d\n", node->intvalue);
+      break;
+    case A_MULTIPLY:
+      printf("op: *, intvalue: %d\n", node->intvalue);
+      break;
+    case A_DIVIDE:
+      printf("op: /, intvalue: %d\n", node->intvalue);
+      break;
+    case A_MODULO:
+      printf("op: %%, intvalue: %d\n", node->intvalue);
+      break;
+    case A_INTLIT:
+      printf("intvalue: %d\n", node->intvalue);
+      break;
+    default:
+      fprintf(stderr, "Invalid AST node operator: %d\n", node->op);
+      exit(1);
+  }
+
+  // Recursively print the left and right child nodes with increased level
+  printAST(node->left, level + 1);
+  printAST(node->right, level + 1);
 }

@@ -9,27 +9,44 @@ matrix code and executes the corresponding arithmetic operations
 while storing temporary numbers on a stack. (Not really a stack,
 because the interpreter can read any number from the stack.)
 
-# The matrix code
+# The Tau Epsilon VM
 
-## Specifications
+## Build instructions
 
-The Tau Epsilon matrix code is an intermediate representation of mathematical operations.
-Each instruction is a 4D row vector, having the following structure:
+In order to build this VM from source, you need GCC and optionally GNU Make.
+If you are on a Linux machine, you can proceed to building from source, and if you're 
+on Windows, you need to install MinGW w64 to get GCC and perhaps you can get a Make 
+binary for Windows by googling it.
 
-[opcode] [argument1] [argument2] [argument3]
+### Building from source
 
-There are currently 8 opcodes, with more coming in the future. The current opcodes are:
+1. Clone this repository
+2. Type `cd te_math_vm` in a terminal
+3. Type `make comp` to compile the main executable
+4. (Optional) Type `make interp` to compile the interpreter. The main executable compiles the code and interprets it, whereas the interpreter only interprets a compiled Matrix code.
 
-| Opcode | Name          | Description                                                                                                                                                                                                                                                                                                                                                          | Argument 1                                                           | Argument 2                                                                                  | Argument 3                                                                                |
-|--------|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------|---------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
-| 0      | NOPE          | Nope, don't do anything.                                                                                                                                                                                                                                                                                                                                             | This argument is ignored                                             | This argument is ignored                                                                    | This argument is ignored                                                                  |
-| 1      | STORE         | Store the first argument in the cell pointed to by the second  argument. The third argument is ignored.                                                                                                                                                                                                                                                              | Numeric value to be stored                                           | Index of the cell in which  to store the number                                             | This argument is ignored                                                                  |
-| 2      | LOAD          | Load the content of the cell pointed  to by the first argument into the cell  pointed to by the second argument. Save and delete the content of the cell whose index  is the first argument, shift all cells from  the index argument 2 to the right, and  store the saved content into the cell  pointed to by the second argument. The third  argument is ignored. | Index of the cell with the content that should be loaded.            | Index of the cell in which to load the content.                                             | This argument is ignored                                                                  |
-| 3      | ADD           | Add the contents of the cells pointed to by  the first and second arguments, then store  the result in the cell pointed to by the  third argument. The contents of the cells pointed to by the first and second  arguments are deleted.                                                                                                                              | Index of the cell with the left operand                              | Index of the cell with the right operand                                                    | Index of the cell in which  to store the sum.                                             |
-| 4      | SUB           | Subtract the content of the second cell  from the content of the first cell and store the result in the cell pointed to by the  third argument. The contents of the cells  pointed to by the first and second arguments are deleted.                                                                                                                                 | Index of the cell with the left operand                              | Index of the cell with the right operand                                                    | Index of the cell in which  to store the difference.                                      |
-| 5      | MUL           | Multiply the contents of the cells pointed to by the first and second arguments, then store the result in the cell pointed to by the third argument. The contents of the cells pointed to by the first and second arguments are deleted.                                                                                                                             | Index of the cell with the left  operand                             | Index of the cell with the right operand                                                    | Index of the cell in which to store the product.                                          |
-| 6      | DIV           | Divide the content of the first cell by the content of the second cell and store the quotient in the cell pointed to by the third argument. The contents of the cells pointed to by the first and second  arguments are deleted.                                                                                                                                     | Index of the cell with the left  operand                             | Index of the cell with the right operand                                                    | Index of the cell in which  to store the quotient.                                        |
-| 7      | PRINT_AND_POP | Print and pop the contents of up to three cells by  specifying their indices. Duplicate arguments are  ignored.                                                                                                                                                                                                                                                      | Index of the first cell whose  content should be printed and popped. | Index of the second cell whose content should be printed and  popped. Ignored if duplicate. | Index of the third cell whose content should be printed and popped. Ignored if duplicate. |
+```
+git clone https://github.com/ComradeCat1/te_math_vm.git
+cd te_math_vm
+make comp
+make interp
+```
+
+## Usage instructions
+
+After you have the main executable (which is called "te"), you can use it to evaluate your math operations doing the following steps:
+1. Create a text file (preferably with the .te extension) and write your math operations in it.
+2. Save the text file.
+3. Run the following command to execute the file:
+```
+./te infile compile
+```
+If you want to view the generated AST (for debugging purposes), run the following command:
+```
+./te infile ast
+```
+If you're on Windows, you can use the same commands, but remove the ./ from the beginning of the commands.
+4. You will see a number printed to the console. That's the result of the math operations in your text file.
 
 ## VM features
 

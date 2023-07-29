@@ -10,6 +10,7 @@ struct ASTnode *binexpr(int rbp);
 
 int interpretAST(char *out);
 int compileAST(struct ASTnode *n);
+void printAST(struct ASTnode *n, int level);
 
 int alloc_stack();
 void free_stack(int space);

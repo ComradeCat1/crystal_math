@@ -5,6 +5,7 @@
 #include "decl.h"
 #include <errno.h>
 #include <stdio.h>
+#include <string.h>
 
 // Initialise global variables
 static void init() {
@@ -18,7 +19,10 @@ static void init() {
 
 // Print out a usage if started incorrectly
 static void usage(char *prog) {
-  fprintf(stderr, "Usage: %s infile\n", prog);
+  fprintf(stderr, "Usage: %s infile [options]\n", prog);
+  fprintf(stderr, "Options:\n"
+                  "  compile    Compile the file to matrix code, then interpret the code\n"
+                  "  ast        Print the AST of the code. (For debugging)\n");
   exit(1);
 }
 
@@ -28,7 +32,7 @@ static void usage(char *prog) {
 int main(int argc, char *argv[]) {
   struct ASTnode *n;
 
-  if (argc != 2)
+  if (argc != 3)
     usage(argv[0]);
 
   init();
@@ -46,18 +50,25 @@ int main(int argc, char *argv[]) {
 
   scan(&Token);			// Get the first token from the input
   n = binexpr(0);		// Parse the expression in the file
-  compileAST(n);	  // compile the AST to bytecode
-  PrintAndPopOP();
+  if (strcmp(argv[2], "compile") == 0) {
+    compileAST(n);	  // compile the AST to bytecode
+    PrintAndPopOP();
 
-  freeall_stacks();
+    freeall_stacks();
 
-  Line = 0;
+    Line = 0;
 
-  fclose(Outfile);	// Close the output file
+    fclose(Outfile);	// Close the output file
 
-  interpretAST("out.temc");
+    interpretAST("out.temc");
 
-  freeall_stacks();
+    freeall_stacks();
+  } else if (strcmp(argv[2], "ast") == 0) {
+    printAST(n, 0);
+    freeall_stacks();
+  } else {
+    usage(argv[0]);
+  }
 
   return 0;
 }
