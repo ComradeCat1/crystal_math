@@ -46,7 +46,7 @@ If you want to view the generated AST (for debugging purposes), run the followin
 ./te infile ast
 ```
 If you're on Windows, you can use the same commands, but remove the ./ from the beginning of the commands.
-4. You will see a number printed to the console. That's the result of the math operations in your text file.
+<br>4. You will see a number printed to the console. That's the result of the math operations in your text file.
 
 ## VM features
 
