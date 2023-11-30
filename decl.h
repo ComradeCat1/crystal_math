@@ -12,7 +12,10 @@ int interpretAST(char *out);
 int compileAST(struct ASTnode *n);
 void printAST(struct ASTnode *n, int level);
 
+void statements(void);
+
 int alloc_stack();
 void free_stack(int space);
 void freeall_stacks();
 int PrintAndPopOP();
+void semi(void);

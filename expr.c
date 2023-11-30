@@ -21,6 +21,16 @@ static struct ASTnode *primary(void) {
       }
       scan(&Token);
       return n;
+    case T_PRINT:
+      scan(&Token);
+      n = binexpr(0);
+      if (Token.token != T_SEMI) {
+        fprintf(stderr, "syntax error on line %d, expected ';'\n", Line);
+        exit(1);
+      }
+      n = mkastunary(A_PRINT, n, 0);
+      scan(&Token);
+      return n;
     default:
       fprintf(stderr, "syntax error on line %d, token %d\n", Line, Token.token);
       exit(1);
@@ -45,14 +55,16 @@ int arithop(int tokentype) {
     return (A_RPAREN);
   case T_PERCENT:
     return (A_MODULO);
+  case T_PRINT:
+    return (A_PRINT);
   default:
-    fprintf(stderr, "syntax error on line %d, token %d\n", Line, tokentype);
+    fprintf(stderr, "SYntax error on line %d, token %d\n", Line, tokentype);
     exit(1);
   }
 }
 
 // Operator precedence for each token
-static int OpPrec[] = { 0, 10, 10, 20, 20, 20, 0 };
+static int OpPrec[] = { 0, 10, 10, 20, 20, 20, 0, 0, 0, 0, 0};
 
 // Check that we have a binary operator and
 // return its precedence.
@@ -62,10 +74,14 @@ static int op_precedence(int tokentype) {
       return 30;
     case T_RPAREN:
       return 30;
+    case T_PRINT:
+      return 5;
+    case T_SEMI:
+      return 5;
     default:
       int prec = OpPrec[tokentype];
       if (prec == 0) {
-        fprintf(stderr, "syntax error on line %d, token %d\n", Line, tokentype);
+        fprintf(stderr, "Syntax error on line %d, token %d\n", Line, tokentype);
         exit(1);
       }
       return prec;
@@ -81,7 +97,7 @@ struct ASTnode *binexpr(int ptp) {
 
   // If no tokens left, return just the left node
   tokentype = Token.token;
-  if (tokentype == T_EOF)
+  if (tokentype == T_SEMI || tokentype == T_EOF)
     return left;
 
   // While the precedence of this token is
@@ -101,18 +117,28 @@ struct ASTnode *binexpr(int ptp) {
         exit(1);
       }
       scan(&Token);
+    }
+    else if (tokentype == T_PRINT) {
+      right = binexpr(0);
+      if (Token.token != T_SEMI) {
+        fprintf(stderr, "syntax error on line %d, expected ';'\n", Line);
+        exit(1);
+      }
+      scan(&Token);
     } else {
       // Parse the next primary expression
       right = binexpr(op_precedence(tokentype));
     }
 
-    // Join the left and right expressions with the operator
-    left = mkastnode(arithop(tokentype), left, right, 0);
+    if (tokentype != T_PRINT) {
+      // Join the left and right expressions with the operator
+      left = mkastnode(arithop(tokentype), left, right, 0);
+    }
 
     // Update the details of the current token
     tokentype = Token.token;
-    if (tokentype == T_EOF)
-      return left;
+    if (tokentype == T_SEMI)
+      return (left);
   }
 
   // Return the tree we have when the precedence

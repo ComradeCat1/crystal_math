@@ -5,7 +5,7 @@
 
 // Token types
 enum {
-  T_EOF, T_PLUS, T_MINUS, T_STAR, T_SLASH, T_PERCENT, T_INTLIT, T_LPAREN, T_RPAREN
+  T_EOF, T_PLUS, T_MINUS, T_STAR, T_SLASH, T_PERCENT, T_INTLIT, T_LPAREN, T_RPAREN, T_SEMI, T_PRINT
 };
 
 // Token structure
@@ -16,7 +16,7 @@ struct token {
 
 // AST node types
 enum {
-  A_ADD, A_SUBTRACT, A_MULTIPLY, A_DIVIDE, A_MODULO, A_INTLIT, A_LPAREN, A_RPAREN
+  A_ADD, A_SUBTRACT, A_MULTIPLY, A_DIVIDE, A_MODULO, A_INTLIT, A_LPAREN, A_RPAREN, A_PRINT
 };
 
 // Abstract Syntax Tree structure

@@ -63,6 +63,9 @@ void printAST(struct ASTnode* node, int level) {
     case A_INTLIT:
       printf("intvalue: %d\n", node->intvalue);
       break;
+    case A_PRINT:
+      printf("op: print, intvalue: %d\n", node->intvalue);
+      break;
     default:
       fprintf(stderr, "Invalid AST node operator: %d\n", node->op);
       exit(1);

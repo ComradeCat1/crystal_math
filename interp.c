@@ -58,12 +58,21 @@ static int skipOut() {
 static int scanBytecode(int c) {
   int k, val = 0;
 
+  int is_neg = 0;
+  if ('-' == c) {
+    is_neg = 1;
+    c = nextOut();
+  }
+
   // Convert each character into an int value
   while ((k = chrpos("0123456789", c)) >= 0) {
     val = val * 10 + k;
     c = nextOut();
   }
 
+  if (is_neg) {
+    val = -val;
+  }
 
   // We hit a non-integer character, put it back.
   putback(c);

@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
   n = binexpr(0);		// Parse the expression in the file
   if (strcmp(argv[2], "compile") == 0) {
     compileAST(n);	  // compile the AST to bytecode
-    PrintAndPopOP();
+    // PrintAndPopOP();
 
     freeall_stacks();
 

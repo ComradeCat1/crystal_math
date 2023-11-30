@@ -158,6 +158,9 @@ int compileAST(struct ASTnode *n) {
             stack[op1] = result;
             freestack[op1] = 0;
             return result;
+        case A_PRINT:
+            PrintAndPopOP();
+            return 0;
         default:
             fprintf(stderr, "syntax error on line %d, token %d\n", Line, n->op);
             exit(1);

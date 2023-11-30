@@ -12,3 +12,6 @@ extern_ struct token	Token;
 
 extern_ int stack[12];
 extern_ int freestack[12];
+
+#define TEXTLEN         512             // Length of symbols in input
+extern_ char Text[TEXTLEN + 1];         // Last identifier scanned
